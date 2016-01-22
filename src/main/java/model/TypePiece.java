@@ -9,7 +9,8 @@ public enum TypePiece {
 	DWARF(2), 
 	SLAYER(1), 
 	TRAP(0),
-	TREASURE(0); 
+	TREASURE(0),
+	ELF(4);
 
 	private int attackPoints;
 

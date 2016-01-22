@@ -14,34 +14,49 @@ public class Fight implements Action {
 	 */
 	public Piece execute(Piece attacker, Piece defender) {
 
-		Piece looser;
-		if (defender.getType() == TypePiece.DRAGON
-				&& attacker.getType() == TypePiece.SLAYER) { // if DRAGON vs SLAYER
-			looser = defender;
-		} else if (defender.getType() != TypePiece.TRAP	&& defender.getType() != TypePiece.TREASURE) {
-			if (attacker.getType().getAttackPoints() > defender
-					.getType().getAttackPoints()) { // If attacker wins
-				looser = defender;
-			} else if (attacker.getType().getAttackPoints() < defender
-					.getType().getAttackPoints()) { // If defender looses
-				looser = attacker;
-		} else { // If equality
-			looser = null;
+		if (defender.getType() == TypePiece.DRAGON && attacker.getType() == TypePiece.SLAYER)
+		{ // if DRAGON vs SLAYER
+			return defender;
 		}
+
+		if(defender.getType() == TypePiece.ELF && attacker.getType()==TypePiece.DWARF)
+		{
+			return null;
+		}
+
+		if(defender.getType() == TypePiece.DWARF && attacker.getType()==TypePiece.ELF)
+		{
+			return null;
+		}
+
+		if (defender.getType() != TypePiece.TRAP	&& defender.getType() != TypePiece.TREASURE) {
+			return getPieceWhoWin(attacker, defender);
 			
-		} else if (defender.getType() == TypePiece.TRAP) {// If defender is a TRAP
-			if (attacker.getType() == TypePiece.DWARF) { // If attacker is a DWARF then he wins
-				looser = defender;
-			} 
-			else { 
-				
-				
-				// If attacker is not a DWARF then defender wins
-				looser = attacker;
-			}
-		} else {
-			looser = defender; // TREASURE
 		}
-		return looser;
+
+		if (defender.getType() == TypePiece.TRAP) {// If defender is a TRAP
+			return PieceWinVsTrap(attacker, defender);
+		}
+
+		return defender; // TREASURE
+	}
+
+	private Piece PieceWinVsTrap(Piece attacker, Piece defender) {
+		if (attacker.getType() == TypePiece.DWARF) { // If attacker is a DWARF then he wins
+            return defender;
+        }
+		return attacker;
+	}
+
+
+	private Piece getPieceWhoWin(Piece attacker, Piece defender) {
+		if (attacker.getType().getAttackPoints() > defender.getType().getAttackPoints()) { // If attacker wins
+            return defender;
+        }
+
+		if (attacker.getType().getAttackPoints() < defender.getType().getAttackPoints()) { // If defender looses
+            return attacker;
+        }
+		return null;
 	}
 }
